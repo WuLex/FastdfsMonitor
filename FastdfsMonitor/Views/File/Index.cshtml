@@ -1,0 +1,76 @@
+﻿@{
+    ViewData["Title"] = "FastDFS Management";
+}
+
+<h2>Upload File</h2>
+
+<form enctype="multipart/form-data">
+    <input type="file" name="file" />
+    <button type="button" onclick="upload()">Upload</button>
+</form>
+
+<hr />
+
+<h2>File List</h2>
+
+<table id="fileTable" class="layui-table" lay-filter="fileTable">
+    <thead>
+        <tr>
+            <th lay-data="{field:'name', width: 200}">Name</th>
+            <th lay-data="{field:'size', width: 100}">Size</th>
+            <th lay-data="{field:'createDate', width: 200}">Create Date</th>
+            <th lay-data="{field:'operate', width: 200, toolbar: '#operateToolbar'}">Operate</th>
+        </tr>
+    </thead>
+</table>
+
+<script type="text/html" id="operateToolbar">
+    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="delete">Delete</a>
+    <a class="layui-btn layui-btn-xs" lay-event="download">Download</a>
+</script>
+
+@section Scripts {
+    <script>
+        layui.use(['table', 'upload'], function () {
+            var table = layui.table;
+            var upload = layui.upload;
+
+            table.render({
+                elem: '#fileTable',
+                url: '/file/getFiles',
+                cols: [[
+                    { field: 'name', title: 'Name', width: 200 },
+                    { field: 'size', title: 'Size', width: 100 },
+                    { field: 'createDate', title'Create Date', width: 200 },
+                    { field: 'operate', title: 'Operate', width: 200, toolbar: '#operateToolbar' }
+                    ]]
+            });
+
+            upload.render({
+                elem: 'form [type="file"]',
+                url: '/file/upload',
+                done: function () {
+                    table.reload('fileTable');
+                }
+            });
+
+            table.on('tool(fileTable)', function (obj) {
+                var data = obj.data;
+                if (obj.event === 'delete') {
+                    layer.confirm('Are you sure to delete the file?', function (index) {
+                        layer.close(index);
+                        $.post('/file/delete', { fileId: data.id }, function (result) {
+                            if (result.code === 0) {
+                                table.reload('fileTable');
+                            } else {
+                                layer.msg(result.msg, { icon: 2 });
+                            }
+                        });
+                    });
+                } else if (obj.event === 'download') {
+                    location.href = '/file/download?fileId=' + data.id;
+                }
+            });
+    });
+</script>
+}
