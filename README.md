@@ -9,7 +9,7 @@ docker容器
 
 ![image](https://raw.githubusercontent.com/WuLex/UsefulPicture/main/fastdfsmanager/fastdfsresult1.png)
 
-查看服务器目录
+查看服务器挂载目录(挂载宿主机目录到容器目录)
 
 ![image](https://raw.githubusercontent.com/WuLex/UsefulPicture/main/fastdfsmanager/fastdfsresult3.png)
 
