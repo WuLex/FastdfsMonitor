@@ -1,10 +1,17 @@
 # FastdfsMonitor
 
-
-
 ## 运行结果如图:
+### 页面
+![image](https://raw.githubusercontent.com/WuLex/UsefulPicture/main/fastdfsmanager/fastdfslist.png)
+### 服务器
 
+docker容器
 
+![image](https://raw.githubusercontent.com/WuLex/UsefulPicture/main/fastdfsmanager/fastdfsresult1.png)
+
+查看服务器目录
+
+![image](https://raw.githubusercontent.com/WuLex/UsefulPicture/main/fastdfsmanager/fastdfsresult3.png)
 
 ## 环境搭建命令记录
 [Centos 7.9中使用Docker搭建FastDFS环境记录](https://github.com/WuLex/FastdfsMonitor/blob/main/Centos%207.9%E4%B8%AD%E4%BD%BF%E7%94%A8Docker%E6%90%AD%E5%BB%BAFastDFS%E7%8E%AF%E5%A2%83%E8%AE%B0%E5%BD%95.md)
