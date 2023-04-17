@@ -76,27 +76,31 @@ namespace FastdfsMonitor.Services
     
         public FastDFSService(IOptions<FastDFSOptions> optionsAccessor, IFastDFSClient client)
         {
+            
             _options = optionsAccessor.Value;
             _client = client;
+
+
         }
+      
 
         public async Task<string> UploadAsync(string groupName, string filePath)
         {
             var storageNode = await _client.GetStorageNodeAsync(groupName);
-            return await _client.UploadFileAsync(storageNode, groupName, filePath); 
+            return await _client.UploadFileAsync(storageNode,filePath); 
         }
 
         public async Task<string> GetffffAsync(string groupName, string filePath)
         {
             var storageNode = await _client.GetStorageNodeAsync(groupName);
-            return await _client.UploadFileAsync(storageNode, groupName, filePath);
+            return await _client.UploadFileAsync(storageNode, filePath);
         }
         //https://github.com/cocosip/FastDFSCore/blob/master/samples/FastDFSCore.Sample/ISampleAppService.cs
         //https://github.com/cocosip/FastDFSCore/blob/master/samples/FastDFSCore.Sample/SampleAppService.cs
         public async Task<byte[]> DownloadAsync(string groupName, string fileId)
         {
             var storageNode = await _client.GetStorageNodeAsync(groupName);
-            return await _client.DownloadFileAsync(storageNode, groupName, fileId);
+            return await _client.DownloadFileAsync(storageNode, fileId);
         }
 
         public async Task<bool> DeleteAsync(string groupName, string fileId)

@@ -3,7 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FastdfsMonitor", "FastdfsMonitor\FastdfsMonitor.csproj", "{04184ED0-2742-490B-B6CA-9592631B8AC4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FastdfsMonitor", "FastdfsMonitor\FastdfsMonitor.csproj", "{04184ED0-2742-490B-B6CA-9592631B8AC4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FastDFSCore", "FastDFSCore\FastDFSCore.csproj", "{8698757F-C111-4C5B-AAC1-AD047F50FD51}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FastDFSCore.Transport.DotNetty", "FastDFSCore.Transport.DotNetty\FastDFSCore.Transport.DotNetty.csproj", "{C7B35D9C-9662-4D4B-9246-6D78321A00B2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FastDFSCore.Transport.SuperSocket", "FastDFSCore.Transport.SuperSocket\FastDFSCore.Transport.SuperSocket.csproj", "{0C216452-16B5-43C4-8254-14004E4B08B4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +21,18 @@ Global
 		{04184ED0-2742-490B-B6CA-9592631B8AC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{04184ED0-2742-490B-B6CA-9592631B8AC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{04184ED0-2742-490B-B6CA-9592631B8AC4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8698757F-C111-4C5B-AAC1-AD047F50FD51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8698757F-C111-4C5B-AAC1-AD047F50FD51}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8698757F-C111-4C5B-AAC1-AD047F50FD51}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8698757F-C111-4C5B-AAC1-AD047F50FD51}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7B35D9C-9662-4D4B-9246-6D78321A00B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7B35D9C-9662-4D4B-9246-6D78321A00B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7B35D9C-9662-4D4B-9246-6D78321A00B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7B35D9C-9662-4D4B-9246-6D78321A00B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C216452-16B5-43C4-8254-14004E4B08B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C216452-16B5-43C4-8254-14004E4B08B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C216452-16B5-43C4-8254-14004E4B08B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C216452-16B5-43C4-8254-14004E4B08B4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

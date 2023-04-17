@@ -7,9 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FastDFSCore" Version="1.7.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.16" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.16" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\temp\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FastDFSCore.Transport.DotNetty\FastDFSCore.Transport.DotNetty.csproj" />
+    <ProjectReference Include="..\FastDFSCore.Transport.SuperSocket\FastDFSCore.Transport.SuperSocket.csproj" />
   </ItemGroup>
 
 </Project>

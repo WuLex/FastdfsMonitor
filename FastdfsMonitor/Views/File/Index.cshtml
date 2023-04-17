@@ -4,71 +4,171 @@
 
 <h2>Upload File</h2>
 
-<form enctype="multipart/form-data">
+@*<form enctype="multipart/form-data">
     <input type="file" name="file" />
-    <button type="button" onclick="upload()">Upload</button>
-</form>
-
+    <button type="button" class="layui-btn" id="btnUpload">
+        <i class="layui-icon">&#xe67c;</i>上传图片
+    </button>
+</form>*@
+<div class="layui-upload">
+    <button type="button" class="layui-btn" id="btnUpload">上传图片</button>
+    <div class="layui-upload-list">
+        <img class="layui-upload-img" id="demo1">
+        <p id="demoText"></p>
+    </div>
+    <div style="width: 95px;">
+        <div class="layui-progress layui-progress-big" lay-showpercent="yes" lay-filter="demo">
+            <div class="layui-progress-bar" lay-percent=""></div>
+        </div>
+    </div>
+</div>
+<!--进度条-->
+<a name="list-progress"> </a>
 <hr />
 
 <h2>File List</h2>
+<table id="fileTable" class="layui-table" lay-filter="fileTable"></table>
 
-<table id="fileTable" class="layui-table" lay-filter="fileTable">
-    <thead>
-        <tr>
-            <th lay-data="{field:'name', width: 200}">Name</th>
-            <th lay-data="{field:'size', width: 100}">Size</th>
-            <th lay-data="{field:'createDate', width: 200}">Create Date</th>
-            <th lay-data="{field:'operate', width: 200, toolbar: '#operateToolbar'}">Operate</th>
-        </tr>
-    </thead>
-</table>
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+      <button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行数据</button>
+      <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
+      <button class="layui-btn layui-btn-sm" lay-event="isAll">验证是否全选</button>
+    </div>
+</script>
 
 <script type="text/html" id="operateToolbar">
-    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="delete">Delete</a>
-    <a class="layui-btn layui-btn-xs" lay-event="download">Download</a>
+    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="delete">删除(Delete)</a>
+    <a class="layui-btn layui-btn-xs" lay-event="download">下载(Download)</a>
 </script>
 
 @section Scripts {
     <script>
-        layui.use(['table', 'upload'], function () {
+        layui.use(['table', 'element', 'upload'], function () {
             var table = layui.table;
             var upload = layui.upload;
+            var element = layui.element;
 
             table.render({
                 elem: '#fileTable',
-                url: '/file/getFiles',
+                url: '/file/GetFiles',
+                method: "post",
+                loading: true,
+                contentType: 'application/json',
+                //where: obj,
+                parseData: function (res) { 
+                    //console.log(res);
+                    return {
+                        "code": res.code, 
+                        "msg": res.msg,
+                        "count": res.count, 
+                        "data": res.data 
+                    };
+                },
                 cols: [[
-                    { field: 'name', title: 'Name', width: 200 },
-                    { field: 'size', title: 'Size', width: 100 },
-                    { field: 'createDate', title'Create Date', width: 200 },
-                    { field: 'operate', title: 'Operate', width: 200, toolbar: '#operateToolbar' }
-                    ]]
+                    { type: 'checkbox', fixed: 'left' }, 
+                    { field: 'id', title: 'ID', width: 80, fixed: 'left', unresize: true, sort: true },
+                    { field: 'fileName', title: 'Name', width: 250 },
+                    { field: 'fileId', title: 'Fastdfs保存路径', width:350 },
+                    { field: 'fileSize', title: 'Size', width: 100 },
+                    { field: 'uploadTime', title: 'UploadTime', width: 200, templet: function (d) {
+                        return layui.util.toDateString(d.uploadTime, 'yyyy-MM-dd HH:mm:ss');
+                      } 
+                    },
+                    { field: 'operate', title: '操作', fixed: 'right', toolbar: '#operateToolbar' }
+                ]]
+                , toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
+                , defaultToolbar: ['filter', 'exports', 'print', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
+                    title: '提示'
+                    , layEvent: 'LAYTABLE_TIPS'
+                    , icon: 'layui-icon-tips'
+                }]
+                , page: true
             });
 
-            upload.render({
-                elem: 'form [type="file"]',
+           var uploadInst =   upload.render({
+                //elem: 'form [type="file"]',
+                elem: '#btnUpload',
                 url: '/file/upload',
-                done: function () {
+                before: function (obj) {
+                    //预读本地文件示例，不支持ie8
+                    obj.preview(function (index, file, result) {
+                        $('#demo1').attr('src', result); //图片链接（base64）
+                    });
+                    element.progress('demo', '0%'); //进度条复位
+                    layer.msg('上传中', { icon: 16, time: 0 });
+                },
+                done: function (res) {
+                    //如果上传失败
+                    if (res.code > 400) {
+                        return layer.msg('上传失败');
+                    }
                     table.reload('fileTable');
+                    //上传成功的一些操作
+                    $('#demoText').html(''); //置空上传失败的状态
+                }, 
+                error: function () {
+                    //请求异常回调
+                    console.log("请求异常回调");
+                    //演示失败状态，并实现重传
+                    var demoText = $('#demoText');
+                    demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                    demoText.find('.demo-reload').on('click', function () {
+                        uploadInst.upload();
+                    });
+                } //进度条
+                , progress: function (n, elem, e) {
+                    element.progress('demo', n + '%'); //可配合 layui 进度条元素使用
+                    if (n == 100) {
+                        layer.msg('上传完毕', { icon: 1 });
+                    }
                 }
             });
 
-            table.on('tool(fileTable)', function (obj) {
+            //头工具栏事件
+            table.on('toolbar(fileTable)', function (obj) {
+                var checkStatus = table.checkStatus(obj.config.id);
+                switch (obj.event) {
+                    case 'getCheckData':
+                        var data = checkStatus.data;
+                        layer.alert(JSON.stringify(data));
+                        break;
+                    case 'getCheckLength':
+                        var data = checkStatus.data;
+                        layer.msg('选中了：' + data.length + ' 个');
+                        break;
+                    case 'isAll':
+                        layer.msg(checkStatus.isAll ? '全选' : '未全选');
+                        break;
+
+                    //自定义头工具栏右侧图标 - 提示
+                    case 'LAYTABLE_TIPS':
+                        layer.alert('这是工具栏右侧自定义的一个图标按钮');
+                        break;
+                };
+            });
+
+            //监听行工具事件
+           table.on('tool(fileTable)', function (obj) {
                 var data = obj.data;
-                if (obj.event === 'delete') {
-                    layer.confirm('Are you sure to delete the file?', function (index) {
+                if (obj.event === 'delete') 
+                {
+                    layer.confirm('你确定删除此文件吗?', function (index) {
                         layer.close(index);
-                        $.post('/file/delete', { fileId: data.id }, function (result) {
-                            if (result.code === 0) {
+                        $.post('/file/delete', { id: data.id }, function (result) {
+                            if (result.code === 200) {
+                                layer.msg(result.msg, { icon: 1 });
                                 table.reload('fileTable');
-                            } else {
+                            } 
+                            else 
+                            {
                                 layer.msg(result.msg, { icon: 2 });
                             }
                         });
                     });
-                } else if (obj.event === 'download') {
-                    location.href = '/file/download?fileId=' + data.id;
+                }
+                else if (obj.event === 'download') {
+                    location.href = '/file/download?id=' + data.id;
                 }
             });
     });
