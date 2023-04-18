@@ -1,0 +1,75 @@
+﻿@model DockerExecResponse
+
+@{
+    ViewData["Title"] = "执行Docker命令";
+}
+
+<h1>获取监控数据页面</h1>
+<blockquote class="layui-elem-quote">
+    发送命令到Centos7.9并执行Docker exec命令去容器执行获取
+</blockquote>
+<div class="layui-collapse">
+    <div class="layui-colla-item">
+        <h2 class="layui-colla-title">输出:</h2>
+        <div class="layui-colla-content layui-show">
+            <pre>@Model.Output</pre>
+        </div>
+    </div>
+    <div class="layui-colla-item">
+        <h2 class="layui-colla-title">退出代码:</h2>
+        <div class="layui-colla-content layui-show">@Model.ExitCode</div>
+    </div>
+    <div class="layui-colla-item">
+        <h2 class="layui-colla-title">命令超时时间:</h2>
+        <div class="layui-colla-content layui-show">@Model.CommandTimeout@("秒")</div>
+    </div>
+    <div class="layui-colla-item">
+        <h2 class="layui-colla-title">错误信息:</h2>
+        <div class="layui-colla-content layui-show">@Model.Error</div>
+    </div>
+</div>
+
+
+@*<div class="layui-row">
+    <div class="layui-col-md12">
+        <div class="layui-card">
+            <h3 class="layui-card-header">输出:</h3>
+            <div class="layui-card-body">
+                <pre>@Model.Output</pre>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="layui-row">
+    <div class="layui-col-md12">
+        <div class="layui-card">
+            <div class="layui-card-header">退出代码:</div>
+            <div class="layui-card-body">
+                <pre>@Model.ExitCode</pre>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="layui-row">
+    <div class="layui-col-md12">
+        <div class="layui-card">
+            <h3 class="layui-card-header">错误信息:</h3>
+            <div class="layui-card-body">
+                <pre>@Model.Error</pre>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="layui-row">
+    <div class="layui-col-md12">
+        <div class="layui-card">
+            <h3 class="layui-card-header">命令超时时间:</h3>
+            <div class="layui-card-body">
+                <pre>@Model.CommandTimeout</pre>
+            </div>
+        </div>
+    </div>
+</div>*@

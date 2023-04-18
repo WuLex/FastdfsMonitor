@@ -1,7 +1,10 @@
 using FastDFSCore;
 using FastdfsMonitor.Entities;
+using FastdfsMonitor.Models;
 using FastdfsMonitor.Services;
+using FastdfsMonitor.Utils;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
  
@@ -29,7 +32,28 @@ builder.Services.AddFastDFSCore(c =>
     });
 })
  .AddFastDFSDotNetty(); //通信方式一
- //.AddFastDFSSuperSocket(); //通信方式二
+                        //.AddFastDFSSuperSocket(); //通信方式二
+#endregion
+
+
+#region 注册ISshClientWrapper
+builder.Services.AddSingleton<ISshClientWrapper>(sp =>
+{
+    // 读取SshSettings配置
+    var sshSettings = Configuration.GetSection("SshSettings").Get<SshSettings>();
+
+    #region 读取配置方式一
+    //var host = Configuration["SshSettings:Host"];
+    //var port = int.Parse(Configuration["SshSettings:Port"]);
+    //var username = Configuration["SshSettings:Username"];
+    //var password = Configuration["SshSettings:Password"];
+    //return new SshClientWrapper(host, port, username, password);
+    #endregion
+
+    #region 读取配置方式二
+    return new SshClientWrapper(sshSettings.Host, sshSettings.Port, sshSettings.Username, sshSettings.Password);
+    #endregion
+});
 #endregion
 
 var app = builder.Build();
